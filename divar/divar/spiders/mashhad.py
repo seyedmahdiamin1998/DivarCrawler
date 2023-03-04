@@ -19,6 +19,7 @@ class MashhadSpider(scrapy.Spider):
             results = re.search(r'("last_post_sort_date":)\d*', script)
             if results:
                 last_post_sort_date = re.split(":",results.group())[-1]
+
                 my_data = { "json_schema":{
                                         "category":{"value":"cars"}, 
                                         "cities":["3"]
@@ -41,7 +42,8 @@ class MashhadSpider(scrapy.Spider):
         
         items = json_data['web_widgets']['post_list']
 
-        last_post_sort_date = items[0]['action_log']['server_side_info']['info']['extra_data']['jli']['last_post_sort_date']
+        last_post_sort_date = json_data['last_post_date']
+
 
         for item in items:
             token = item['data']['action']['payload']['token']
@@ -58,7 +60,7 @@ class MashhadSpider(scrapy.Spider):
             url = 'https://divar.ir/v/'+title+'_'+category_slug_persian+'_'+city_persian+'_'+district_persian+'_'+'دیوار'+'/'+ token
             
             yield scrapy.Request(url = url , callback = self.parse_detail)
-
+        
         my_data = {"json_schema":{
                                   "category":{"value":"cars"},
                                   "cities":["3"]
@@ -76,21 +78,27 @@ class MashhadSpider(scrapy.Spider):
         '''
         scrap data from item's detail page
         '''
-        title = response.css(".kt-page-title__title--responsive-sized::text").extract_first()
-        color = response.css(".kt-group-row-item--info-row~ .kt-group-row-item--info-row+ .kt-group-row-item--info-row .kt-group-row-item__value::text").extract_first()
-        manufacture_year =  response.css(".kt-group-row-item--info-row:nth-child(2) .kt-group-row-item__value::text").extract_first()
-        kilometer =  response.css(".kt-group-row-item--info-row:nth-child(1) .kt-group-row-item__value::text").extract_first()
+        info = {}
+        data = json.loads(response.css('script[type="application/ld+json"]::text').extract_first())
+        for i in range(len(data)):
+            if 'description' in data[i]:
 
-        info = {
-            'title' : title,
-            'color' : color,
-            'manufacture_year' : manufacture_year,
-            'kilometer' : kilometer
-        }
+                info['name'] = data[0]['name'] if 'name' in data[0] else 'null'
+                info['category'] = data[0]['category'] if 'category' in data[0] else 'null'
+                info['model'] = data[0]['model'] if 'model' in data[0] else 'null'
+                info['vehicleTransmission'] = data[0]['vehicleTransmission'] if 'vehicleTransmission' in data[0] else 'null'
+                info['productionDate'] = data[0]['productionDate'] if 'productionDate' in data[0] else 'null'
+                info['url'] = data[0]['url'] if 'url' in data[0] else 'null'
+                info['mileageFromOdometer'] = data[0]['mileageFromOdometer']['value'] if 'mileageFromOdometer' in data[0] else 'null'
+                info['knownVehicleDamages'] = data[0]['knownVehicleDamages'] if 'knownVehicleDamages' in data[0] else 'null'
+                info['priceCurrency'] = data[0]['offers']['priceCurrency'] if 'offers' in data[0] else 'null'
+                info['price'] = data[0]['offers']['price'] if 'offers' in data[0] else 'null'
+                info['color'] = data[0]['color'] if 'color' in data[0] else 'null'
+                info['brand'] = data[0]['brand']['name'] if 'brand' in data[0] else 'null'
+                info['description'] = data[0]['description'] if 'description' in data[0] else 'null'
+                break
+        
         yield info
-
 
 # scrapy crawl mashhad -o a.json
 
-
-# 1677840877583626
