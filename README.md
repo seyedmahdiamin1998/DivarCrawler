@@ -20,6 +20,12 @@ ___
 $ cd divar
 $ scrapy crawl mashhad -o results.json
 ```
+or if you want to save results as **csv** or **xml** run codes below.
+```
+$ scrapy crawl mashhad -o results.csv
+
+$ scrapy crawl mashhad -o results.xml
+```
 ___
 
 ## result example
