@@ -17,7 +17,6 @@ NEWSPIDER_MODULE = "divar.spiders"
 #USER_AGENT = "divar (+http://www.yourdomain.com)"
 
 # Obey robots.txt rules
-# ROBOTSTXT_OBEY = True
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
@@ -63,9 +62,9 @@ DOWNLOAD_DELAY = 2
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    "divar.pipelines.DivarPipeline": 300,
-#}
+ITEM_PIPELINES = {
+   "divar.pipelines.DivarPipeline": 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

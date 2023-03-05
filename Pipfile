@@ -5,6 +5,9 @@ name = "pypi"
 
 [packages]
 scrapy = "*"
+sqlalchemy = "*"
+sqlalchemy-utils = "*"
+psycopg2 = "*"
 
 [dev-packages]
 

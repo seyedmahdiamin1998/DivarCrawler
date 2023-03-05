@@ -1,4 +1,5 @@
 import scrapy
+from ..items import MashhadItem
 import re
 import json
 
@@ -78,7 +79,8 @@ class MashhadSpider(scrapy.Spider):
         '''
         scrap data from item's detail page
         '''
-        info = {}
+        # info = {}
+        info = MashhadItem()
         data = json.loads(response.css('script[type="application/ld+json"]::text').extract_first())
         for i in range(len(data)):
             if 'description' in data[i]:
@@ -88,7 +90,6 @@ class MashhadSpider(scrapy.Spider):
                 info['model'] = data[0]['model'] if 'model' in data[0] else 'null'
                 info['vehicleTransmission'] = data[0]['vehicleTransmission'] if 'vehicleTransmission' in data[0] else 'null'
                 info['productionDate'] = data[0]['productionDate'] if 'productionDate' in data[0] else 'null'
-                info['url'] = data[0]['url'] if 'url' in data[0] else 'null'
                 info['mileageFromOdometer'] = data[0]['mileageFromOdometer']['value'] if 'mileageFromOdometer' in data[0] else 'null'
                 info['knownVehicleDamages'] = data[0]['knownVehicleDamages'] if 'knownVehicleDamages' in data[0] else 'null'
                 info['priceCurrency'] = data[0]['offers']['priceCurrency'] if 'offers' in data[0] else 'null'
@@ -96,6 +97,7 @@ class MashhadSpider(scrapy.Spider):
                 info['color'] = data[0]['color'] if 'color' in data[0] else 'null'
                 info['brand'] = data[0]['brand']['name'] if 'brand' in data[0] else 'null'
                 info['description'] = data[0]['description'] if 'description' in data[0] else 'null'
+                info['url'] = data[0]['url'] if 'url' in data[0] else 'null'
                 break
         
         yield info
