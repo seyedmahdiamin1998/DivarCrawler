@@ -90,7 +90,7 @@ class MashhadSpider(scrapy.Spider):
                 info['model'] = data[0]['model'] if 'model' in data[0] else 'null'
                 info['vehicleTransmission'] = data[0]['vehicleTransmission'] if 'vehicleTransmission' in data[0] else 'null'
                 info['productionDate'] = data[0]['productionDate'] if 'productionDate' in data[0] else 'null'
-                info['mileageFromOdometer'] = data[0]['mileageFromOdometer']['value'] if 'mileageFromOdometer' in data[0] else 'null'
+                info['mileageFromOdometer'] = data[0]['mileageFromOdometer']['value'] if 'mileageFromOdometer' in data[0] else -1
                 info['knownVehicleDamages'] = data[0]['knownVehicleDamages'] if 'knownVehicleDamages' in data[0] else 'null'
                 info['priceCurrency'] = data[0]['offers']['priceCurrency'] if 'offers' in data[0] else 'null'
                 info['price'] = data[0]['offers']['price'] if 'offers' in data[0] else 'null'
